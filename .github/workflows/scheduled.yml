@@ -1,0 +1,76 @@
+name: lifecycle
+
+on:
+  # A scheduled (using Cron syntax) Action
+  schedule:
+    # All GitHub Actions run in UTC
+    - cron: '0 * * * *' # Every hour, beginning of hour
+  # Enable manual testing
+  workflow_dispatch: {}
+  # Enable testing whenever this workflow is modified
+  push:
+    paths:
+      - ${{ github.action_path }}
+  
+# Jobs by default concurrently; introduce dependencies with
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idneeds
+jobs:
+  report-time:
+    runs-on: ubuntu-latest
+    # Steps run serially
+    steps:
+      # Report HH:MM Time
+      - name: Report HH:MM Time
+        env:
+          DATE_FORMAT: "+%HH:%MM"
+        run: time date -u "$DATE_FORMAT"
+
+      # Report whole date output in case flags are wrong
+      - name: Report Backup Time
+        if: ${{ failure() }}
+        run: time date
+  report-date:
+    runs-on: ubuntu-latest
+    needs: report-time
+    steps:
+      # Report Date
+      - name: Report "Month Day, Year" Date
+        env:
+          DATE_FORMAT: "+%B %d, %Y"
+        run: time date -u "$DATE_FORMAT"
+
+      # Report whole date output in case flags are wrong
+      - name: Report Backup Date
+        if: ${{ failure() }}
+        run: time date
+  report-env:
+    runs-on: ubuntu-latest
+    needs: report-date
+    steps:
+      # Report context
+      - name: Echo whole GitHub env
+        env:
+          GH: ${{ toJSON(github) }}
+          GH_ENV: ${{ toJSON(env) }}
+          GH_JOB: ${{ toJSON(job) }}
+          GH_STEPS: ${{ toJSON(steps) }}
+          GH_RUNNER: ${{ toJSON(runner) }}
+          GH_SECRETS: ${{ toJSON(secrets) }}
+          GH_STRATEGY: ${{ toJSON(strategy) }}
+          GH_MATRIX: ${{ toJSON(matrix) }}
+          GH_NEEDS: ${{ toJSON(needs) }}
+        run: |
+          echo $GH
+          echo $GH_ENV
+          echo $GH_JOB
+          echo $GH_STEPS
+          echo $GH_RUNNER
+          echo $GH_SECRETS
+          echo $GH_STRATEGY
+          echo $GH_MATRIX
+          echo $GH_NEEDS
+
+      # Report whole date output in case flags are wrong
+      - name: Too bad, so sad
+        if: ${{ failure() }}
+        run: echo echo fail, lol
