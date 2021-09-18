@@ -10,7 +10,7 @@ on:
   # Enable testing whenever this workflow is modified
   push:
     paths:
-      - ${{ github.action_path }}
+      - "$GITHUB_WORKFLOW_PATH"
   
 # Jobs by default concurrently; introduce dependencies with
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idneeds
