@@ -10,7 +10,7 @@ on:
   # Enable testing whenever this workflow is modified
   push:
     paths:
-      - "$GITHUB_ACTION_PATH"
+      - '/.github/workflows/*.yml'
   
 # Jobs by default concurrently; introduce dependencies with
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idneeds
