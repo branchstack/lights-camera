@@ -10,7 +10,9 @@ on:
   # Enable testing whenever this workflow is modified
   push:
     paths:
-      - '.github/workflows/*.yml'
+      # TODO(senorflor): investigate if we can get this path/file from a provided context
+      # cleanly
+      - '.github/workflows/scheduled.yml'
   
 # Jobs by default concurrently; introduce dependencies with
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idneeds
