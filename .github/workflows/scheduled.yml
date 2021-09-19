@@ -4,7 +4,7 @@ on:
   # A scheduled (using Cron syntax) Action
   schedule:
     # All GitHub Actions run in UTC
-    - cron: '0 * * * *' # Every hour, beginning of hour
+    - cron: '0 0 * * *' # Every day, beginning of day (UTC)
   # Enable manual testing
   workflow_dispatch: {}
   # Enable testing whenever this workflow is modified
