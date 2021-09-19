@@ -1,0 +1,34 @@
+name: api-trigger
+
+on:
+  # An externally API-driven Action
+  repository_dispatch:
+    types: [cli]
+  # Enable manual testing
+  workflow_dispatch: {}
+  # Enable testing whenever this workflow is modified
+  push:
+    paths:
+      # TODO(senorflor): investigate if we can get this path/file from a provided context
+      # cleanly
+      - '.github/workflows/api.yml'
+  
+# Jobs by default concurrently; introduce dependencies with
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idneeds
+jobs:
+  report-machine:
+    runs-on: ubuntu-latest
+    # Steps run serially
+    steps:
+      # Report info about the runner's container/machine
+      - name: Run uname
+        env:
+          UNAME_OPTIONS: "-a"
+        run: uname "$UNAME_OPTIONS"
+  report-memory:
+    runs-on: ubuntu-latest
+    needs: report-machine
+    steps:
+      # Report detailed memory breakdown
+      - name: Report memory breakdown
+        run: time date -u "$DATE_FORMAT"
