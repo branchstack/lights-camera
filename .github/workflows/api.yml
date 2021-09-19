@@ -31,4 +31,4 @@ jobs:
     steps:
       # Report detailed memory breakdown
       - name: Report memory breakdown
-        run: time date -u "$DATE_FORMAT"
+        run: cat /proc/meminfo
