@@ -1,4 +1,4 @@
-name: lifecycle
+name: scheduled-trigger
 
 on:
   # A scheduled (using Cron syntax) Action
